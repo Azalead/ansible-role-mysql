@@ -8,7 +8,9 @@ socket = {{ mysql_socket }}
 [mysqld]
 port = {{ mysql_port }}
 bind-address = {{ mysql_bind_address }}
+basedir = {{ mysql_basedir }}
 datadir = {{ mysql_datadir }}
+lc-messages-dir = {{ mysql_lc_messages_dir }}
 socket = {{ mysql_socket }}
 pid-file = {{ mysql_pid_file }}
 {% if mysql_skip_name_resolve %}
@@ -29,6 +31,19 @@ log = {{ mysql_log }}
 log-error = {{ mysql_log_error }}
 {% endif %}
 
+{% if mysql_explicit_defaults_for_timestamp is defined %}
+  explicit_defaults_for_timestamp = {{ mysql_explicit_defaults_for_timestamp}}
+{% endif %}
+
+{% if mysql_local_infile is defined %}
+  local-infile = {{ mysql_local_infile }}
+{% endif %}
+
+{% if mysql_secure_file_priv is defined %}
+  secure_file_priv = {{ mysql_secure_file_priv }}
+{% endif %}
+
+
 {% if mysql_slow_query_log_enabled %}
 # Slow query log configuration.
 slow_query_log = 1
@@ -41,12 +56,12 @@ long_query_time = {{ mysql_slow_query_time }}
 server-id = {{ mysql_server_id }}
 
 {% if mysql_replication_role == 'master' %}
-log_bin = mysql-bin
-log-bin-index = mysql-bin.index
+log_bin = {{ mysql_log_bin }}
+log-bin-index = {{ mysql_log_bin_index }}
 expire_logs_days = {{ mysql_expire_logs_days }}
 max_binlog_size = {{ mysql_max_binlog_size }}
 binlog_format = {{mysql_binlog_format}}
-
+sync_binlog = {{ mysql_sync_binlog }}
 {% for db in mysql_databases %}
 {% if db.replicate|default(1) %}
 binlog_do_db = {{ db.name }}
@@ -58,8 +73,24 @@ binlog_ignore_db = {{ db.name }}
 
 {% if mysql_replication_role == 'slave' %}
 read_only
-relay-log = relay-bin
-relay-log-index = relay-bin.index
+{% if mysql_master_info_repository is defined  %}
+master_info_repository = {{ mysql_master_info_repository }}
+{% endif %}
+{% if mysql_relay_log_info_repository is defined %}
+relay_log_info_repository = {{ mysql_relay_log_info_repository }}
+{% endif %}
+sync_master_info=10000
+sync_relay_log_info=10000
+relay-log = {{ mysql_relay_log }}
+relay-log-index = {{ mysql_relay_log_index }}
+{% if mysql_relay_log_info_file is defined  %}
+relay-log-info-file = {{ mysql_relay_log_info_file }}
+{% endif %}
+{% if mysql_relay_log_space_limit is defined  %}
+relay-log-space-limit = {{ mysql_relay_log_space_limit }}
+{% endif %}
+
+
 {% endif %}
 {% endif %}
 
@@ -95,7 +126,14 @@ wait_timeout = {{ mysql_wait_timeout }}
 lower_case_table_names = {{ mysql_lower_case_table_names }}
 event_scheduler = {{ mysql_event_scheduler_state }}
 
+
+# Storage settings
+
+default_storage_engine = {{ mysql_default_storage_engine }}
+
 # InnoDB settings.
+
+
 {% if mysql_supports_innodb_large_prefix %}
 innodb_large_prefix = {{ mysql_innodb_large_prefix }}
 innodb_file_format = {{ mysql_innodb_file_format }}
@@ -106,6 +144,14 @@ innodb_log_file_size = {{ mysql_innodb_log_file_size }}
 innodb_log_buffer_size = {{ mysql_innodb_log_buffer_size }}
 innodb_flush_log_at_trx_commit = {{ mysql_innodb_flush_log_at_trx_commit }}
 innodb_lock_wait_timeout = {{ mysql_innodb_lock_wait_timeout }}
+innodb_flush_method = {{ mysql_innodb_flush_method }}
+innodb_buffer_pool_instances = {{ mysql_innodb_buffer_pool_instances }}
+innodb_thread_concurrency = {{ ansible_processor_vcpus*2 }}
+
+# Charset parameters
+character-set-server= {{ mysql_character_set_server }}
+collation-server= {{ mysql_collation_server }}
+init-connect= {{ mysql_init_connect }}
 
 [mysqldump]
 quick

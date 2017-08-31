@@ -38,7 +38,9 @@ mysql_enablerepo: ""
 mysql_port: "3306"
 mysql_bind_address: '0.0.0.0'
 mysql_skip_name_resolve: no
+mysql_basedir: /usr
 mysql_datadir: /var/lib/mysql
+mysql_lc_messages_dir: "/usr/share/mysql"
 mysql_sql_mode: ''
 # The following variables have a default value depending on operating system.
 # mysql_pid_file: /var/run/mysqld/mysqld.pid
@@ -68,10 +70,15 @@ mysql_max_heap_table_size: "16M"
 mysql_group_concat_max_len: "1024"
 mysql_join_buffer_size: "262144"
 
+
 # Other settings.
 mysql_lower_case_table_names: "0"
 mysql_wait_timeout: "28800"
 mysql_event_scheduler_state: "OFF"
+
+# Storage settings
+
+mysql_default_storage_engine: "InnoDB"
 
 # InnoDB settings.
 mysql_innodb_file_per_table: "1"
@@ -82,13 +89,22 @@ mysql_innodb_log_file_size: "64M"
 mysql_innodb_log_buffer_size: "8M"
 mysql_innodb_flush_log_at_trx_commit: "1"
 mysql_innodb_lock_wait_timeout: "50"
+mysql_innodb_flush_method: "0_DIRECT"
+mysql_innodb_buffer_pool_instances: "8"
 
 # These settings require MySQL > 5.5.
 mysql_innodb_large_prefix: "1"
 mysql_innodb_file_format: "barracuda"
 
+# Charset Options
+
+mysql_character_set_server: "utf8"
+mysql_collation_server: "utf8_general_ci"
+mysql_init_connect: "'SET NAMES utf8'"
 # mysqldump settings.
 mysql_mysqldump_max_allowed_packet: "64M"
+
+
 
 # Logging settings.
 mysql_log: ""
@@ -123,3 +139,7 @@ mysql_replication_role: ''
 mysql_replication_master: ''
 # Same keys as `mysql_users` above.
 mysql_replication_user: []
+mysql_log_bin: "mysql-bin"
+mysql_log_bin_index: "mysql-bin.index"
+mysql_relay_log: "relay-bin"
+mysql_relay_log_index: "relay-bin.index"

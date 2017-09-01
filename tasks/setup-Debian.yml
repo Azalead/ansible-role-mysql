@@ -29,5 +29,5 @@
   when: mysql_installed.stat.exists == false
 
 - name: Initializing Mysql Datadir
-  command: mysqld --initialize --user=mysql --basedir="{{ mysql_basedire }}" --datadir={{ mysql_datadir }}
+  command: mysqld --initialize --user=mysql --basedir="{{ mysql_basedire }}" --datadir=""{{ mysql_datadir }}""
   when: mysql_datadir != "/var/lib/mysql"

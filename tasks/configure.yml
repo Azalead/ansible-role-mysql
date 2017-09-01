@@ -83,7 +83,8 @@
   when: mysql_relay_log != ""
 
 - name: Initializing Mysql Datadir
-  command: sudo mysqld --initialize --user=mysql --basedir="{{ mysql_basedir }}" --datadir="{{ mysql_datadir }}"
+  command: mysqld --initialize --user=mysql --basedir="{{ mysql_basedir }}" --datadir="{{ mysql_datadir }}"
+  become: true
   when: mysql_datadir != "/var/lib/mysql"
 
 - name: Ensure MySQL is started and enabled on boot.

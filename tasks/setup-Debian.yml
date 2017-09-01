@@ -29,4 +29,4 @@
   when: mysql_installed.stat.exists == false
 
 - command: mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-  when: "{{ mysql_datadir }}" != "/var/lib/mysql"
+  when: mysql_datadir != "/var/lib/mysql"

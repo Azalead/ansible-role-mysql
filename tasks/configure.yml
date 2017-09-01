@@ -82,15 +82,6 @@
     setype: mysqld_db_t
   when: mysql_relay_log != ""
 
-- name: Create datadir if it does not exist
-  file:
-    path: "{{ mysql_datadir }}"
-    state: directory
-    owner: mysql
-    group: mysql
-    mode:  0755
-    setype: mysqld_db_t
-
 - name: Initializing Mysql Datadir
   command: mysqld --initialize --user=mysql --basedir="{{ mysql_basedir }}" --datadir="{{ mysql_datadir }}"
   become: true

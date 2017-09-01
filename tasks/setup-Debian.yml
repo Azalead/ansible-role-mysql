@@ -27,7 +27,3 @@
           - "ib_logfile0"
           - "ib_logfile1"
   when: mysql_installed.stat.exists == false
-
-- name: Initializing Mysql Datadir
-  command: mysqld --initialize --user=mysql --basedir="{{ mysql_basedir }}" --datadir="{{ mysql_datadir }}"
-  when: mysql_datadir != "/var/lib/mysql"

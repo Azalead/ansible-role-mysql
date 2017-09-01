@@ -74,11 +74,11 @@
 - name: Set ownership on bin log file (if configured).
   file:
     path: "{{ mysql_log_bin_dir }}"
-      state: directory
-      owner: mysql
-      group: mysql
-      mode:  0755
-      setype: mysqld_db_t
+    state: directory
+    owner: mysql
+    group: mysql
+    mode:  0755
+    setype: mysqld_db_t
   when: mysql_log_bin != ""
 
 - name: Set ownership on relay log file (if configured).

@@ -45,6 +45,7 @@
     mode:  0755
     setype: mysqld_db_t
 
+
 - name: Set ownership on slow query log file (if configured).
   file:
     path: "{{ mysql_slow_query_log_file }}"
@@ -69,6 +70,43 @@
     group: mysql
     mode: 0640
   when: mysql_log == "" and mysql_log_error != ""
+
+- name: Set ownership on bin log file (if configured).
+  file:
+    path: "{{ mysql_log_bin }}"
+    state: file
+    owner: mysql
+    group: mysql
+    mode: 0640
+  when: mysql_log_bin != ""
+
+- name: Set ownership on bin log index file (if configured).
+  file:
+    path: "{{ mysql_log_bin_index }}"
+    state: file
+    owner: mysql
+    group: mysql
+    mode: 0640
+  when: mysql_log_bin_index != ""
+
+- name: Set ownership on relay log file (if configured).
+  file:
+    path: "{{ mysql_relay_log }}"
+    state: file
+    owner: mysql
+    group: mysql
+    mode: 0640
+  when: mysql_relay_log != ""
+
+- name: Set ownership on relay log index file (if configured).
+  file:
+    path: "{{ mysql_relay_log_index }}"
+    state: file
+    owner: mysql
+    group: mysql
+    mode: 0640
+  when: mysql_relay_log_index != ""
+
 
 - name: Ensure MySQL is started and enabled on boot.
   service: "name={{ mysql_daemon }} state=started enabled={{ mysql_enabled_on_startup }}"

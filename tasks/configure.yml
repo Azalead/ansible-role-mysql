@@ -74,7 +74,7 @@
 - name: Set ownership on bin log file (if configured).
   file:
     path: "{{ mysql_log_bin }}"
-    state: file
+    state: touch
     owner: mysql
     group: mysql
     mode: 0640
@@ -92,7 +92,7 @@
 - name: Set ownership on relay log file (if configured).
   file:
     path: "{{ mysql_relay_log }}"
-    state: file
+    state: touch
     owner: mysql
     group: mysql
     mode: 0640
